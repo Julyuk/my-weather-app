@@ -3,19 +3,14 @@ function showPosition(position) {
   let longitude = position.coords.longitude;
   let key = "215576bab28022db35e6e64f040e1b56";
   let url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${key}`;
-  axios.get(url).then(displayWeather);
+  axios.get(url).then(displayWeatherCondition);
 }
-function displayWeather(response) {
-  let temperature = Math.round(response.data.main.temp);
-  document.querySelector("#temp").innerHTML = `${temperature} °C`;
-  document.querySelector("#city").innerHTML = response.data.name;
-}
+
 function getLocation(event) {
   event.preventDefault();
   navigator.geolocation.getCurrentPosition(showPosition);
 }
-function searchCity() {
-  let city = document.querySelector("#city-input").value;
+function searchCity(city) {
   let apiKey = "0a521eaf234a3a56f45252fac3c737ad";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
   axios.get(apiUrl).then(displayWeatherCondition);
@@ -32,17 +27,17 @@ function displayWeatherCondition(response) {
 
 function changeCity(event) {
   event.preventDefault();
-  let enteredcity = document.querySelector("#city");
-  let cityinput = document.querySelector("#city-input").value;
-  enteredcity.innerHTML = cityinput.value;
-  searchCity(enteredcity);
+  let citygiven = document.querySelector("#city");
+  let city = document.querySelector("#city-input").value;
+  citygiven.innerHTML = city.value;
+  searchCity(city);
 }
 
 let buttonCurrent = document.querySelector(".button-current");
 buttonCurrent.addEventListener("click", getLocation);
 
-let btn = document.querySelector(".button-search");
-btn.addEventListener("click", changeCity);
+let searchf = document.querySelector(".button-search");
+searchf.addEventListener("click", changeCity);
 
 let now = new Date();
 let day = document.querySelector("#day");
@@ -53,7 +48,7 @@ let weekdays = [
   "Wednesday",
   "Thursday",
   "Friday",
-  "Saturday",
+  "Saturday"
 ];
 let weekday = weekdays[now.getDay()];
 let minutes = now.getMinutes();
@@ -65,5 +60,5 @@ if (hours < 10) {
   hours = `0${hours}`;
 }
 day.innerHTML = `${weekday} ${hours}:${minutes}`;
+searchCity("London");
 
-//https://phftoe.csb.app/ (my complete working code)
